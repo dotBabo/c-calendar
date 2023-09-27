@@ -51,6 +51,11 @@ int findNumDaysInMonth(int year, int mon){
 
 
 int starting_day(int year, int mon, int day){
+    /*This is done using Zeller's Congruence!
+        Since i decided to do this in c like some crazy person I dont have access to libraries
+        and so i had to fetch this on from geeks for geeks. Life savers here's the link
+        "https://www.geeksforgeeks.org/zellers-congruence-find-day-date/"
+     */
     if (mon < 3){
         mon += 12;
         year--; 
