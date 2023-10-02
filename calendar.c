@@ -4,7 +4,7 @@
 int calendar(int ,int );
 int starting_day(int,int,int);
 int findNumDaysInMonth(int,int);
-int createTable(int);
+int createTable(int,int);
 void printTable(int[6][7], char[7][4]);
 
 int main (){
@@ -13,9 +13,10 @@ int main (){
     int smon;
 
     printf("Welcome to the Calendar of Bab,\n Please input the year in the format 'YYYY'\n\n");
-    scanf("%d", &syear);
+    scanf("%d%*c", &syear);
     printf("\nPLease input the month in the format 'MM'\n\n");
-    scanf("%d", &smon);
+    scanf("%d%*c", &smon);
+    printf("\n");
 
     calendar(syear,smon);
 
@@ -29,15 +30,13 @@ int calendar(int year, int mon){
 
     daysInMonth = findNumDaysInMonth(year, mon);
     firstDay = starting_day(year, mon, 1);
-    createTable(firstDay);
-
-    
+    createTable(firstDay,daysInMonth); 
 }
 
 int findNumDaysInMonth(int year, int mon){
     if (mon == 4|| mon == 6 || mon == 9 ||mon == 11){
         return 30;
-    }
+    }   
     else if (mon == 1|| mon == 3||mon == 5|| mon == 7 || mon == 8 ||mon == 10||mon == 12 ){
         return 31;
     }
@@ -64,12 +63,12 @@ int starting_day(int year, int mon, int day){
 
     int k = year % 100;
     int j = year / 100;
-    int dayOfweek = (day + ((13 * (mon + 1)) / 5) + k + (k / 4) + (j / 4) - (2 * j)) % 7;
+    int dayOfweek = ((day + 13 * (mon + 1)/5 + k+ k / 4 +j /4 + 5 *j) + 5) % 7;
     
     return dayOfweek;
 }
 
-int createTable(int dayOne){
+int createTable(int dayOne,int numDays){
     int i,y;
     int j;
     int table[6][7];
@@ -77,13 +76,20 @@ int createTable(int dayOne){
     char days[7][4] = {"Mon","Tue","Wed","Thu","Fri","Sat","Sun"};
 
     for(y = 0; i < 7;i++){
-        strcpy(header[i], days[dayOne]);
-        dayOne = (dayOne+ 1 ) % 7;
+        strcpy(header[i], days[i]);
     }
 
     for (i = 0; i< 6; i++){
         for (j=0; j<7; j++){
-            table[i][j] = (i * 7)+ j + 1;
+            if(i == 0 && j < dayOne){
+                table[i][j] = 0;
+            }
+            else if(i * 7 + j +1 -dayOne > numDays){
+                table[i][j] = 0;
+            }
+            else {
+            table[i][j] = (i * 7)+ j + 1-dayOne;
+            }
         }
     }
 
