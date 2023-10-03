@@ -1,25 +1,38 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
 int calendar(int ,int );
 int starting_day(int,int,int);
 int findNumDaysInMonth(int,int);
-int createTable(int,int);
-void printTable(int[6][7], char[7][4]);
+int createTable(int,int,int,int);
+void printTable(char[30],int[6][7], char[7][4]);
 
 int main (){
-    char months[12][4]={"Jan", "Feb","Mar", "Apr", "May","Jun","Jul","Aug","Sep","Oct", "Nov","Dec"};
-    int  syear;
+    int syear;
     int smon;
+    char exit;
+    bool on = true;
 
-    printf("Welcome to the Calendar of Bab,\n Please input the year in the format 'YYYY'\n\n");
+    
+    printf("Welcome to the Calendar of Bab,\n");
+
+    while (on == true) {
+    printf("Please input the year in the format 'YYYY'\n\n");
     scanf("%d%*c", &syear);
-    printf("\nPLease input the month in the format 'MM'\n\n");
+    printf("\n");
+    printf("Please input the month in the format 'MM'\n\n");
     scanf("%d%*c", &smon);
     printf("\n");
-
     calendar(syear,smon);
-
+    printf("Would you like to exit the program? Press 'y' to exit and 'n' to print another month\n\n");
+    scanf("%c",&exit);
+    printf("\n");
+        if (exit == 'y'){
+            printf("Goodbye!\n");
+            on = false;
+        }
+    }
 
 }
 
@@ -30,7 +43,7 @@ int calendar(int year, int mon){
 
     daysInMonth = findNumDaysInMonth(year, mon);
     firstDay = starting_day(year, mon, 1);
-    createTable(firstDay,daysInMonth); 
+    createTable(firstDay,daysInMonth,year,mon); 
 }
 
 int findNumDaysInMonth(int year, int mon){
@@ -68,15 +81,23 @@ int starting_day(int year, int mon, int day){
     return dayOfweek;
 }
 
-int createTable(int dayOne,int numDays){
+int createTable(int dayOne,int numDays, int year, int mon){
     int i,y;
     int j;
     int table[6][7];
+    char str_year[5];
     char header[7][4];
+    char title[30]= "";
+    char months[12][10]= {"January","February","March","April","May","June","July", "August", "September","October","November", "December"};
     char days[7][4] = {"Mon","Tue","Wed","Thu","Fri","Sat","Sun"};
 
+    strcat(title, months[mon-1]);
+    strcat(title, " - ");
+    sprintf(str_year, "%d", year);
+    strcat(title,str_year);
+
     for(y = 0; i < 7;i++){
-        strcpy(header[i], days[i]);
+        strncpy(header[i], days[i],sizeof(header[i]));
     }
 
     for (i = 0; i< 6; i++){
@@ -93,13 +114,16 @@ int createTable(int dayOne,int numDays){
         }
     }
 
-    printTable(table,header);
+    printTable(title,table,header);
 
     return 0;
 }
 
 
-void printTable(int table[6][7], char header[7][4]){
+void printTable(char title[30],int table[6][7], char header[7][4]){
+
+    printf("%s\n\n",title);
+
     for (int i = 0; i < 7; i++) {
         printf("%s\t", header[i]);
     }
@@ -112,4 +136,5 @@ void printTable(int table[6][7], char header[7][4]){
         }
         printf("\n");
     }
+    printf("\n");
 }
